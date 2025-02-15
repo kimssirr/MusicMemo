@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.logging.level.web",
+      "type": "java.lang.String",
+      "description": "Description for spring.logging.level.web."
+    },
+    {
+      "name": "spring.logging.level.org.hibernate.SQL",
+      "type": "java.lang.String",
+      "description": "Description for spring.logging.level.org.hibernate.SQL."
+    }
+  ] }

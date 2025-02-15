@@ -1,5 +1,6 @@
 package music.memo.repository;
 
+import music.memo.domain.Music;
 import music.memo.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,8 @@ import static org.junit.Assert.*;
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MusicRepository musicRepository;
 
     @Test
     public void resister() throws Exception {
@@ -30,4 +33,16 @@ public class UserRepositoryTest {
 
         //then
     }
+
+    @Test
+    public void testFindByUser() {
+        User user = userRepository.findByUsername("user1")
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Music> musicList = musicRepository.findByUser(user);
+
+        assertFalse(musicList.isEmpty()); // 음악 데이터가 있어야 함
+        System.out.println("조회된 음악 개수: " + musicList.size());
+    }
+
 }

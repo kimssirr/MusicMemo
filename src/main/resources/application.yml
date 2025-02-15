@@ -7,15 +7,37 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-  logging.level:
-    org.hibernate.SQL: debug
+  logging:
+    level:
+      web: trace
+      org.hibernate.SQL: debug
+
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+    cache: false
+  #  mvc:
+#    view:
+#      prefix: /WEB-INF/views/
+#      suffix: .jsp
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+
   session:
     jdbc:
       initialize-schema: always
+
+  h2:
+    console:
+      enabled: false
+lastfm:
+  api:
+    key: "05840023f92602b2b7d5bba72ae1e45b"
+    secret: "a1aeb12928ddc6f1184a66df99f11872"
+    callback: "http://localhost:8080/auth/callback"

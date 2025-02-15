@@ -1,0 +1,30 @@
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<div th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <header class="bg-light p-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="font-weight-bold">MusicMemo</h1>
+            <nav>
+                <a href="/">홈</a> |
+                <a href="#">음악 검색</a> |
+                <a href="#">추천 음악</a> |
+                <a href="#">리뷰 구경하기</a>
+            </nav>
+            <div>
+                <!-- 로그인되지 않은 상태 -->
+                <a sec:authorize="isAnonymous()"
+                   href="public/login"
+                   class="font-weight-bold">login</a>
+
+                <!-- 로그인된 상태 -->
+                <a sec:authorize="isAuthenticated()"
+                   th:text="|${#authentication.principal.nickname}님|"></a>
+
+                <a sec:authorize="isAuthenticated()"
+                   href="/logout"
+                   class="font-weight-bold">logout</a>
+                <a sec:authorize="isAuthenticated()" href="/user/myPage" class="font-weight-bold">MyPage</a>
+            </div>
+
+        </div>
+    </header>
+</div>

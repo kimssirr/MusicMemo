@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>음악 목록</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .music-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .review-title {
+            font-weight: bold;
+            color: #007bff;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+        .review-content {
+            display: none;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div th:replace="~{public/fragments/header :: header}"></div>
+
+</header>
+
+<main>
+    <div class="container mt-4">
+        <h2 class="mb-4">내 음악 목록</h2>
+
+        <div th:each="music : ${musicList}" class="music-card">
+            <!-- 제목 및 아티스트 -->
+            <h3 th:text="${music.musicTitle + ' - ' + music.artist}"></h3>
+
+            <!-- 장르 및 발매년도 -->
+            <h4 th:text="${music.genre + ', ' + music.releaseYear}"></h4>
+
+            <!-- 리뷰 목록 -->
+            <div th:each="review : ${music.reviews}" class="review-section">
+                <a href="#" class="review-title" th:text="${review.reviewTitle}" th:attr="onclick='toggleReviewContent(this)'"></a>
+                <p class="review-content" th:text="${review.content}"></p>
+            </div>
+
+            <!-- 리뷰 작성 버튼 -->
+            <a th:href="@{/review/write/{userId}/{musicId}(userId=${userId}, musicId=${music.id})}"
+               class="btn btn-primary mt-2">리뷰 쓰기</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleReviewContent(element) {
+            let content = element.nextElementSibling;
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+            } else {
+                content.style.display = 'none';
+            }
+        }
+    </script>
+</main>
+<!-- Footer -->
+<footer class="bg-light text-center p-3 mt-4">
+    <div th:replace="~{public/fragments/footer :: footer}"></div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

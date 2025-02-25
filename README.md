@@ -27,9 +27,3 @@
 ### **빌드 & 개발 도구**
 - **Gradle**  
 - **JUnit 5**  
-
-## 📌 실행 방법
-1. 프로젝트 클론  
-   ```sh
-   git clone https://github.com/your-repo-name.git
-   cd your-repo-name

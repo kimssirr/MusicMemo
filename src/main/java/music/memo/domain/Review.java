@@ -7,13 +7,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import music.memo.dto.ReviewDto;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "music_id"}) }) //특정 음악에 대한 리뷰 1개
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "music_id"}) }) //"한 사용자가 한 음악에 리뷰 하나만 작성 가능" 제약 조건
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +23,7 @@ public class Review {
     private Long id;
     @Column(nullable = false, length = 20)
     private String reviewTitle;
+    @CreationTimestamp
     private LocalDateTime reviewDate;
     @Column(nullable = false)
     private String content;
@@ -40,5 +43,13 @@ public class Review {
         this.reviewTitle = reviewTitle;
         this.content = content;
         this.rating = rating;
+    }
+
+    public ReviewDto toDto() {
+        return ReviewDto.builder()
+                .reviewTitle(reviewTitle)
+                .content(content)
+                .rating(rating)
+                .build();
     }
 }

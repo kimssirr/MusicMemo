@@ -1,6 +1,7 @@
 package music.memo.config;
 
 import music.memo.Service.CustomUserDetailService;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 
 @Configuration
@@ -21,7 +23,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-                .requestMatchers("/static/**");
+                .requestMatchers("/css/**");
     }
 
     // 2) 특정 HTTP 요청에 대한 웹 기반 보안 구성
@@ -63,4 +65,8 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     } //  bcrypt 강력 해싱 함수로 암호를 인코딩한다
+
+    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+        return new HiddenHttpMethodFilter();
+    }
 }

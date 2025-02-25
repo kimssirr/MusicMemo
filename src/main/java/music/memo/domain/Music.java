@@ -19,7 +19,7 @@ public class Music {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="music_id")
     private Long id;
-    @Column(nullable = false) // 제목은 필수값
+    @Column(nullable = false)
     private String musicTitle;
     @Column(nullable = false)
     private String artist;

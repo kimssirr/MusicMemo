@@ -12,6 +12,16 @@
             padding: 15px;
             margin-bottom: 20px;
             background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .music-info {
+            flex: 2;
+        }
+        .review-section {
+            text-align: right;
+            min-width: 200px;
         }
         .review-title {
             font-weight: bold;
@@ -20,17 +30,12 @@
             display: block;
             margin-top: 10px;
         }
-        .review-content {
-            display: none;
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
 <!-- Header -->
 <header>
     <div th:replace="~{public/fragments/header :: header}"></div>
-
 </header>
 
 <main>
@@ -38,35 +43,37 @@
         <h2 class="mb-4">내 음악 목록</h2>
 
         <div th:each="music : ${musicList}" class="music-card">
-            <!-- 제목 및 아티스트 -->
-            <h3 th:text="${music.musicTitle + ' - ' + music.artist}"></h3>
-
-            <!-- 장르 및 발매년도 -->
-            <h4 th:text="${music.genre + ', ' + music.releaseYear}"></h4>
-
-            <!-- 리뷰 목록 -->
-            <div th:each="review : ${music.reviews}" class="review-section">
-                <a href="#" class="review-title" th:text="${review.reviewTitle}" th:attr="onclick='toggleReviewContent(this)'"></a>
-                <p class="review-content" th:text="${review.content}"></p>
+            <!-- 음악 정보 -->
+            <div class="music-info">
+                <span th:text="${music.musicTitle + ' - ' + music.artist}"></span>
+                <span th:text="${music.genre + ', ' + music.releaseYear}"></span>
             </div>
 
-            <!-- 리뷰 작성 버튼 -->
-            <a th:href="@{/review/write/{userId}/{musicId}(userId=${userId}, musicId=${music.id})}"
-               class="btn btn-primary mt-2">리뷰 쓰기</a>
+            <div class="review-section d-flex align-items-center gap-2">
+                <!-- 리뷰가 있을 경우 -->
+                <div th:if="${not #lists.isEmpty(music.reviews)}">
+                    <a th:href="@{/review/view/{reviewId}(reviewId=${music.reviews[0].id})}" class=""
+                       th:text="${music.reviews[0].reviewTitle}"></a>
+                </div>
+
+                <!-- 리뷰가 없을 경우 -->
+                <div th:if="${#lists.isEmpty(music.reviews)}">
+                    <a th:href="@{/review/write/{userId}/{musicId}(userId=${userId}, musicId=${music.id})}"
+                       class="btn btn-primary">리뷰 쓰기</a>
+                </div>
+
+                <!-- 삭제 버튼 -->
+                <form th:action="@{/music/delete/{musicId}(musicId=${music.id})}" method="post"
+                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                    <input type="hidden" name="_method" value="delete"/>  <!-- DELETE 요청 설정 -->
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </div>
+
         </div>
     </div>
-
-    <script>
-        function toggleReviewContent(element) {
-            let content = element.nextElementSibling;
-            if (content.style.display === 'none' || content.style.display === '') {
-                content.style.display = 'block';
-            } else {
-                content.style.display = 'none';
-            }
-        }
-    </script>
 </main>
+
 <!-- Footer -->
 <footer class="bg-light text-center p-3 mt-4">
     <div th:replace="~{public/fragments/footer :: footer}"></div>

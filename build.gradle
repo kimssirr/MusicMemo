@@ -49,9 +49,10 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	//Junit4
-	testImplementation("org.junit.vintage:junit-vintage-engine") {
-		exclude group: "org.hamcrest", module: "hamcrest-core"
-	}
+//	testImplementation("org.junit.vintage:junit-vintage-engine") {
+//		exclude group: "org.hamcrest", module: "hamcrest-core"
+//	}
+	testImplementation 'org.junit.jupiter:junit-jupiter' //junit5
 
 	implementation 'org.apache.httpcomponents.client5:httpclient5' // HTTP 요청 라이브러리
 	implementation 'com.fasterxml.jackson.core:jackson-databind' // JSON 파싱용

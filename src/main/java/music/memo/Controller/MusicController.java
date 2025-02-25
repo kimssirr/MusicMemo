@@ -13,10 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -80,5 +77,11 @@ public class MusicController {
         User user = userService.loadUserByUsername(userDetails.getUsername());
         model.addAttribute("userId", user.getId());
         return "private/music/musicLists";
+    }
+
+    @PostMapping("/delete/{musicId}")
+    public String deleteReview(@PathVariable Long musicId) {
+        musicService.deleteReview(musicId);
+        return "redirect:/music/list"; // 삭제 후 목록 페이지로 이동
     }
 }

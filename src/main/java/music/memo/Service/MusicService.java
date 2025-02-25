@@ -25,18 +25,6 @@ public class MusicService {
     private final MusicRepository musicRepository;
     private final UserRepository userRepository;
 
-    /* 음악 등록 시, 유효성 체크 */
-    public Map<String, String> validateHandling(BindingResult result) {
-        Map<String, String> validatorResult = new HashMap<>();
-
-        /* 유효성 검사에 실패한 필드 목록을 받음 */
-        for (FieldError error : result.getFieldErrors()) {
-            String validKeyName = String.format("valid_%s", error.getField());
-            validatorResult.put(validKeyName, error.getDefaultMessage());
-        }
-        return validatorResult;
-    }
-
     /**
      * 음악 저장
      */
@@ -50,6 +38,20 @@ public class MusicService {
         // 음악 저장
         return musicRepository.save(music).getId(); // ID 반환
     }
+
+    /* 음악 등록 시, 유효성 체크 */
+    public Map<String, String> validateHandling(BindingResult result) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        /* 유효성 검사에 실패한 필드 목록을 받음 */
+        for (FieldError error : result.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
+
+
 
     /**
      * 중복 검사 (음악 제목 + 아티스트)
@@ -87,5 +89,12 @@ public class MusicService {
                 .orElseThrow(() -> new EntityNotFoundException("음악을 찾을 수 없습니다. ID: " + id));
     }
 
+    /**
+     * 음악 삭제
+     */
+    public void deleteReview(Long musicId) {
+
+        musicRepository.deleteById(musicId);
+    }
 }
 

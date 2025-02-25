@@ -50,4 +50,27 @@ public class ReviewService {
         review.setMusic(music);
         return reviewRepository.save(review).getId();
     }
+
+    @Transactional(readOnly = false)
+    public ReviewDto updateReview(Long reviewId, ReviewDto dto) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("리뷰를 찾을 수 없습니다."));
+
+        review.setReviewTitle(dto.getReviewTitle());
+        review.setContent(dto.getContent());
+        review.setRating(dto.getRating());
+
+        return review.toDto();
+
+    }
+
+    public Review getReviewById(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("리뷰를 찾을 수 없습니다."));
+        return review;
+    }
+
+    public void deleteReview(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
+    }
 }

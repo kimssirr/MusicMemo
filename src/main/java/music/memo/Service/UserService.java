@@ -1,13 +1,14 @@
 package music.memo.Service;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import music.memo.domain.User;
 import music.memo.dto.UserSignUpDto;
 import music.memo.repository.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /* 회원가입 시, 유효성 체크 */
     public Map<String, String> validateHandling(BindingResult result) {
@@ -35,7 +37,7 @@ public class UserService {
     /**
      회원가입
      */
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Transactional(readOnly = false)
     public Long save(UserSignUpDto dto) {
@@ -59,7 +61,7 @@ public class UserService {
             errors.put("Duplication_nick", "이미 존재하는 닉네임입니다.");
         }
         if (checkUsernameDuplication(dto)) {
-            errors.put("Duplication_id", "이미 존재하는 아이디입니다.");
+            errors.put("Duplication_username", "이미 존재하는 아이디입니다.");
         }
 
         return errors; // 중복된 필드와 메시지를 반환
@@ -83,5 +85,10 @@ public class UserService {
         return userRepository.existsByEmail(dto.getEmail());
     }
 
+    public User getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        return user;
+    }
 
 }

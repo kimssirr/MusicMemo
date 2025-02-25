@@ -1,15 +1,11 @@
 package music.memo.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import music.memo.domain.Review;
 
-@Getter @Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ReviewDto {
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     @Size(max = 20, message = "제목은 최대 20자까지 입력 가능합니다.")
@@ -22,6 +18,13 @@ public class ReviewDto {
     @Min(value = 1, message = "평점은 최소 1점 이상이어야 합니다.")
     @Max(value = 5, message = "평점은 최대 5점까지 가능합니다.")
     private Integer rating;
+
+    @Builder
+    public ReviewDto(String reviewTitle, String content, Integer rating) {
+        this.reviewTitle = reviewTitle;
+        this.content = content;
+        this.rating = rating;
+    }
 
     public Review toEntity() {
         return Review.builder()

@@ -19,15 +19,18 @@
     <div class="container">
         <h2>리뷰 작성</h2>
         <!-- 음악 제목 -->
-        <h3 class="text-danger" th:if="${musicTitle}" th:text="'🎵 ' + ${musicTitle}"></h3>
-        <h4 class="text-danger" th:if="${musicArtist}" th:text="${musicArtist}"></h4>
+        <h4 class="text">
+            <span th:if="${musicTitle}" th:text="'🎵 ' + ${musicTitle}"></span>
+            <span th:if="${musicArtist}" th:text="' - ' + ${musicArtist}"></span>
+        </h4>
+
 
         <form role=form th:action="@{/review/write/{userId}/{musicId}(userId=${userId}, musicId=${musicId})}"
               th:object="${reviewDto}" method="post">
             <!-- 제목 입력 -->
             <div class="mb-3">
                 <label th:for="reviewTitle" class="form-label">제목 (최대 20자)</label>
-                <input type="text" th:field="*{reviewTitle}" class="form-control" maxlength="20">
+                <input type="text" id="reviewTitle" th:field="*{reviewTitle}" class="form-control" maxlength="20">
                 <p class="text-danger" th:if="${valid_reviewTitle}" th:text="${valid_reviewTitle}"></p>
             </div>
 

@@ -51,8 +51,8 @@
 
             <div class="review-section d-flex align-items-center gap-2">
                 <!-- 리뷰가 있을 경우 -->
-                <div th:if="${not #lists.isEmpty(music.reviews)}">
-                    <a th:href="@{/review/view/{reviewId}(reviewId=${music.reviews[0].id})}" class=""
+                <div th:if="${not #lists.isEmpty(music.reviews)}" th:each="review : ${reviewList}">
+                    <a th:href="@{/review/view/{reviewId}(reviewId=${review.getId()})}" class=""
                        th:text="${music.reviews[0].reviewTitle}"></a>
                 </div>
 

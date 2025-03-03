@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import music.memo.Service.CustomUserDetailService;
 import music.memo.Service.MusicService;
+import music.memo.Service.ReviewService;
 import music.memo.domain.Music;
+import music.memo.domain.Review;
 import music.memo.domain.User;
 import music.memo.dto.MusicDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,8 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +29,8 @@ import java.util.Map;
 public class MusicController {
     private final MusicService musicService;
     private final CustomUserDetailService userService;
+    private final ReviewService reviewService;
+
     @GetMapping("/signup")
     public String musicSignUpForm(Model model) {
         model.addAttribute("music",new MusicDto());
@@ -76,6 +82,12 @@ public class MusicController {
         model.addAttribute("musicList", musicList);
         User user = userService.loadUserByUsername(userDetails.getUsername());
         model.addAttribute("userId", user.getId());
+        List<Review> reviewList= new ArrayList<>();
+        for(Music music : musicList) {
+            reviewList.add(reviewService.findByUserAndMusic(user,music));
+        }
+        model.addAttribute("reviewList", reviewList);
+
         return "private/music/musicLists";
     }
 

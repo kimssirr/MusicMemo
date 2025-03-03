@@ -17,7 +17,6 @@ import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -73,4 +72,10 @@ public class ReviewService {
     public void deleteReview(Long reviewId) {
         reviewRepository.deleteById(reviewId);
     }
+
+    public Review findByUserAndMusic(User user, Music music) {
+        return reviewRepository.findByUserAndMusic(user, music)
+                .orElseThrow(() -> new EntityNotFoundException("리뷰를 찾을 수 없습니다."));
+    }
+
 }
